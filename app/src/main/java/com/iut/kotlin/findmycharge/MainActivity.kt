@@ -49,12 +49,15 @@ class MainActivity : AppCompatActivity() {
         val tv = findViewById<TextView>(R.id.textView)
 
         //Récupération json
-        val url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+5000"
-        val result = HttpConnectServerAsyncTask().execute(url)
-        val json = JSONObject(result.get().toString())
+        var url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&rows=0&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+10000"
+        var result = HttpConnectServerAsyncTask().execute(url)
+        var json = JSONObject(result.get().toString())
 
         //Récupération du nombre de données
         val nbBornes = json.getInt("nhits")
+        url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&rows=$nbBornes&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+10000"
+        result = HttpConnectServerAsyncTask().execute(url)
+        json = JSONObject(result.get().toString())
         Log.d("MainActivity", "nbBornes=$nbBornes")
         tv.text =  nbBornes.toString() + " borne(s) près de votre position"
 
