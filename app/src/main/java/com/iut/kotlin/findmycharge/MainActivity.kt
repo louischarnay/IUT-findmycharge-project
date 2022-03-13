@@ -11,12 +11,17 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.model.LatLng
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
     companion object{
         val INTENT_EXTRA_RESULT_1 = "user_latitude"
         val INTENT_EXTRA_RESULT_2 = "user_longitude"
+        val INTENT_EXTRA_RESULT_3 = "bornes_list"
     }
 
     @SuppressLint("MissingPermission")
@@ -24,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Récupération localisation actuelle
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         val criteres = Criteria()
@@ -34,14 +40,33 @@ class MainActivity : AppCompatActivity() {
 
         val localisation = locationManager.getLastKnownLocation(fournisseur)
         val latitude = localisation?.latitude
+        Log.d("MainActivity", "latitude=$latitude")
         val longitude = localisation?.longitude
+        Log.d("MainActivity", "longitude=$longitude")
 
+        //Récupération composants graphiques
         val button = findViewById<Button>(R.id.button)
+        val tv = findViewById<TextView>(R.id.textView)
 
+        //Récupération json
+        val url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+5000"
+        val result = HttpConnectServerAsyncTask().execute(url)
+        val json = JSONObject(result.get().toString())
+
+        //Récupération du nombre de données
+        val nbBornes = json.getInt("nhits")
+        Log.d("MainActivity", "nbBornes=$nbBornes")
+        tv.text =  nbBornes.toString() + " borne(s) près de votre position"
+
+        //Récupération points les plus proches
+        val bornes : JSONArray = json.getJSONArray("records")
+
+        //Création Listeners
         button.setOnClickListener(View.OnClickListener{
             val intent = Intent(this, MapsActivity::class.java)
             intent.putExtra(INTENT_EXTRA_RESULT_1, latitude)
             intent.putExtra(INTENT_EXTRA_RESULT_2, longitude)
+            intent.putExtra(INTENT_EXTRA_RESULT_3, bornes.toString())
             startActivity(intent)
             finish()
         })
