@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
 
 class BornesListAdapter (val list: List<Bornes>) : BaseAdapter() {
@@ -29,7 +28,7 @@ class BornesListAdapter (val list: List<Bornes>) : BaseAdapter() {
             currentView = inflater.inflate(R.layout.activity_simple_list_item, parent, false)
         }
 
-        var tv = currentView?.findViewById<TextView>(R.id.textView2)
+        var tv = currentView?.findViewById<TextView>(R.id.tv_name)
         tv?.text = list[position].name
 
         return currentView ?: kotlin.run {

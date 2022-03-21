@@ -12,10 +12,8 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.model.LatLng
 import org.json.JSONArray
 import org.json.JSONObject
-import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,9 +22,8 @@ class MainActivity : AppCompatActivity() {
         val INTENT_EXTRA_RESULT_2 = "user_longitude"
         val INTENT_EXTRA_RESULT_3 = "bornes_list"
     }
-    var listContact = mutableListOf<Bornes>()
+    var listBornes = mutableListOf<Bornes>()
     var adapter : BornesListAdapter? = null
-    var lv : ListView? = null
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         //Récupération composants graphiques
         val button = findViewById<Button>(R.id.button)
-        val tv = findViewById<TextView>(R.id.textView)
+        val tv = findViewById<TextView>(R.id.tv_nbBornes)
+        val lv = findViewById<ListView>(R.id.lv_bornes)
 
         //Récupération json
         var url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&rows=0&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+10000"
@@ -71,11 +69,9 @@ class MainActivity : AppCompatActivity() {
         //Construction de la liste
         for (i in 0 until nbBornes){
             var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
-            listContact.add(Bornes("", borne.getString("nom_station"), "", "", "", ""))
+            listBornes.add(Bornes("", borne.getString("nom_station"), "", "", "", ""))
         }
-
-        adapter = BornesListAdapter(listContact)
-        lv = findViewById<ListView>(R.id.listView)
+        adapter = BornesListAdapter(listBornes)
         lv?.adapter = adapter
 
         //Création Listeners

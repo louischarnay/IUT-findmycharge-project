@@ -8,12 +8,14 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_nbBornes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_marginBottom="1dp"
         android:text="@string/textview"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lv_bornes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,10 +32,10 @@
         tools:ignore="TextContrastCheck" />
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/imageFilterView"
+        android:id="@+id/iv_banner"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/tv_nbBornes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +44,7 @@
         tools:ignore="ImageContrastCheck" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/lv_bornes"
         android:layout_width="409dp"
         android:layout_height="450dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
@@ -50,13 +52,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:id="@+id/ib_search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_margin="8dp"
         android:background="@mipmap/ic_search_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck,TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
