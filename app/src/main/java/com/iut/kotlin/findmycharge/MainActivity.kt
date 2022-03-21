@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         val INTENT_EXTRA_RESULT_2 = "user_longitude"
         val INTENT_EXTRA_RESULT_3 = "bornes_list"
     }
+    var listContact = mutableListOf<Bornes>()
+    var adapter : BornesListAdapter? = null
+    var lv : ListView? = null
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +67,16 @@ class MainActivity : AppCompatActivity() {
 
         //Récupération points les plus proches
         val bornes : JSONArray = json.getJSONArray("records")
+
+        //Construction de la liste
+        for (i in 0 until nbBornes){
+            var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
+            listContact.add(Bornes("", borne.getString("nom_station"), "", "", "", ""))
+        }
+
+        adapter = BornesListAdapter(listContact)
+        lv = findViewById<ListView>(R.id.listView)
+        lv?.adapter = adapter
 
         //Création Listeners
         button.setOnClickListener(View.OnClickListener{
