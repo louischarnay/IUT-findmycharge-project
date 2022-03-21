@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         result = HttpConnectServerAsyncTask().execute(url)
         json = JSONObject(result.get().toString())
         Log.d("MainActivity", "nbBornes=$nbBornes")
+
+        //Affichage nombre max de bornes
         tv.text =  nbBornes.toString() + " borne(s) près de votre position"
 
         //Récupération points les plus proches
@@ -69,8 +71,10 @@ class MainActivity : AppCompatActivity() {
         //Construction de la liste
         for (i in 0 until nbBornes){
             var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
-            listBornes.add(Bornes("", borne.getString("nom_station"), "", "", "", ""))
+            listBornes.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
         }
+
+        //Affichage de la liste
         adapter = BornesListAdapter(listBornes)
         lv?.adapter = adapter
 

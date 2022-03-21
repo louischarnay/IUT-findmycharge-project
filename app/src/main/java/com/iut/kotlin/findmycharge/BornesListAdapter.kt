@@ -21,6 +21,7 @@ class BornesListAdapter (val list: List<Bornes>) : BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        //Récupération de la vue de création
         var inflater = LayoutInflater.from(parent!!.context)
         var currentView = convertView
 
@@ -28,8 +29,13 @@ class BornesListAdapter (val list: List<Bornes>) : BaseAdapter() {
             currentView = inflater.inflate(R.layout.activity_simple_list_item, parent, false)
         }
 
-        var tv = currentView?.findViewById<TextView>(R.id.tv_name)
-        tv?.text = list[position].name
+        //Récupération composants graphiques
+        var tv_name = currentView?.findViewById<TextView>(R.id.tv_name)
+        var tv_address = currentView?.findViewById<TextView>(R.id.tv_address)
+
+        //Affichage composants graphiques
+        tv_name?.text = list[position].name
+        tv_address?.text = list[position].address
 
         return currentView ?: kotlin.run {
             Log.e("log", "currentView")
