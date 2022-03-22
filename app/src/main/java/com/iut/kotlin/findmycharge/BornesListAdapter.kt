@@ -42,5 +42,4 @@ class BornesListAdapter (val list: List<Bornes>) : BaseAdapter() {
             View(parent.context)
         }
     }
-
 }

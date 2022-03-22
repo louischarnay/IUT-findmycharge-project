@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         val INTENT_EXTRA_RESULT_2 = "user_longitude"
         val INTENT_EXTRA_RESULT_3 = "bornes_list"
     }
-    var listBornes = mutableListOf<Bornes>()
     var adapter : BornesListAdapter? = null
 
     @SuppressLint("MissingPermission")
@@ -51,28 +50,10 @@ class MainActivity : AppCompatActivity() {
         val lv = findViewById<ListView>(R.id.lv_bornes)
 
         //Récupération json
-        var url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&rows=0&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+10000"
-        var result = HttpConnectServerAsyncTask().execute(url)
-        var json = JSONObject(result.get().toString())
-
-        //Récupération du nombre de données
-        val nbBornes = json.getInt("nhits")
-        url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=mobilityref-france-irve-202&q=&rows=$nbBornes&geofilter.distance=" + latitude.toString() + "%2C+" + longitude.toString() + "%2C+10000"
-        result = HttpConnectServerAsyncTask().execute(url)
-        json = JSONObject(result.get().toString())
-        Log.d("MainActivity", "nbBornes=$nbBornes")
+        val listBornes = HttpConnectServerAsyncTask().execute(latitude, longitude, 10000).get()
 
         //Affichage nombre max de bornes
-        tv.text =  nbBornes.toString() + " borne(s) près de votre position"
-
-        //Récupération points les plus proches
-        val bornes : JSONArray = json.getJSONArray("records")
-
-        //Construction de la liste
-        for (i in 0 until nbBornes){
-            var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
-            listBornes.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
-        }
+        tv.text = listBornes.size.toString() + " borne(s) près de votre position"
 
         //Affichage de la liste
         adapter = BornesListAdapter(listBornes)
@@ -83,9 +64,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             intent.putExtra(INTENT_EXTRA_RESULT_1, latitude)
             intent.putExtra(INTENT_EXTRA_RESULT_2, longitude)
-            intent.putExtra(INTENT_EXTRA_RESULT_3, bornes.toString())
+            intent.putExtra(INTENT_EXTRA_RESULT_3, listBornes)
             startActivity(intent)
-            finish()
         })
     }
 }

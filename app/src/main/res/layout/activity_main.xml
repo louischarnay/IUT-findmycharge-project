@@ -45,7 +45,7 @@
 
     <ListView
         android:id="@+id/lv_bornes"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="450dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
