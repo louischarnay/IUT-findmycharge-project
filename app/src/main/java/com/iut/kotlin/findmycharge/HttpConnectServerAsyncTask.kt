@@ -60,10 +60,12 @@ class HttpConnectServerAsyncTask : AsyncTask<Any, Void, ArrayList<Bornes>>() {
             for (i in 0 until nbBornes){
                 var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
                 if (i == 0){
-                    result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
+                    var pos = borne.getJSONArray("coordonneesxy")
+                    result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), pos.getString(0), pos.getString(1), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
                 }
                 else if (borne.getString("nom_station") != result[result.size - 1].name){
-                    result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
+                    var pos = borne.getJSONArray("coordonneesxy")
+                    result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), pos.getString(0), pos.getString(1), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("com_arm_name"), borne.getString("nbre_pdc")))
                 }
             }
         }

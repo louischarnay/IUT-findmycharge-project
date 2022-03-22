@@ -51,17 +51,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(pos).title("Votre localisation").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
 
         //Parsage des points et affichage
-        /*val json = JSONArray(bornes)
-        for (i in 0 until json.length()){
-            var borne = JSONObject(json[i].toString()).getJSONObject("fields")
-            var pos = LatLng(borne.getJSONArray("coordonneesxy").getDouble(0), borne.getJSONArray("coordonneesxy").getDouble(1))
-            var name = borne.getString("nom_station")
+        for (i in 0 until bornes.size){
+            var pos = LatLng(bornes[i].latitude.toDouble(), bornes[i].longitude.toDouble())
+            var name = bornes[i].name
             mMap.addMarker(MarkerOptions().position(pos).title(name).icon(BitmapDescriptorFactory.defaultMarker()))
-        }*/
+        }
 
         //Configuration de la vue de la mMap
         mMap.moveCamera(CameraUpdateFactory.newLatLng(pos))
-        mMap.setMinZoomPreference(13.0f)
+        mMap.setMinZoomPreference(11.5f)
     }
 
     override fun onBackPressed() {
