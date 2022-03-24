@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FindMyCharge">
         <activity
+            android:name=".Params"
+            android:exported="false" />
+        <activity
             android:name=".SimpleListItem"
             android:exported="false" />
 
