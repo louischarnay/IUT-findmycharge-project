@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //Récupération localisation actuelle
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
 
         val criteres = Criteria()
         criteres.setAccuracy(Criteria.ACCURACY_FINE)
@@ -87,6 +87,17 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(INTENT_EXTRA_RESULT_6, onlyFree)
             startActivityForResult(intent, 1000)
         })
+
+        lv.setOnItemClickListener { parent, view, position, id ->
+            var tmpList = ArrayList<Bornes>()
+            tmpList.add(listBornes[position])
+
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra(INTENT_EXTRA_RESULT_1, latitude)
+            intent.putExtra(INTENT_EXTRA_RESULT_2, longitude)
+            intent.putExtra(INTENT_EXTRA_RESULT_3, tmpList)
+            startActivity(intent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_background_foreground"
+    tools:context=".DetailsActivity">
+
+    <Button
+        android:id="@+id/bt_see"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voir sur la carte"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_nom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:text="Nom"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_adresse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:text="Adresse"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nom" />
+
+    <TextView
+        android:id="@+id/tv_impl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Implantation"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_tel"
+        app:layout_constraintStart_toStartOf="@+id/tv_tel"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tel" />
+
+    <TextView
+        android:id="@+id/tv_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre de points"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_impl"
+        app:layout_constraintStart_toStartOf="@+id/tv_impl"
+        app:layout_constraintTop_toBottomOf="@+id/tv_impl" />
+
+    <TextView
+        android:id="@+id/tv_dep"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Département"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tv_region"
+        app:layout_constraintStart_toStartOf="@+id/tv_adresse"
+        app:layout_constraintTop_toBottomOf="@+id/tv_adresse" />
+
+    <TextView
+        android:id="@+id/tv_tel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="48dp"
+        android:text="Numéro de tel"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dep" />
+
+    <TextView
+        android:id="@+id/tv_region"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Région"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_adresse"
+        app:layout_constraintTop_toBottomOf="@+id/tv_adresse" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
