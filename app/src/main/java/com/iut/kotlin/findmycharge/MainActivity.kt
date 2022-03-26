@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +22,18 @@ class MainActivity : AppCompatActivity() {
         val INTENT_EXTRA_RESULT_1 = "user_latitude"
         val INTENT_EXTRA_RESULT_2 = "user_longitude"
         val INTENT_EXTRA_RESULT_3 = "bornes_list"
+        val INTENT_EXTRA_RESULT_4 = "city_name"
+        val INTENT_EXTRA_RESULT_5 = "range"
+        val INTENT_EXTRA_RESULT_6 = "only_free"
     }
+    lateinit var listBornes : ArrayList<Bornes>
     var adapter : BornesListAdapter? = null
+    var tv : TextView? = null
+    var latitude : Double? = 0.0
+    var longitude : Double? = 0.0
+    var cityName : String? = ""
+    var range : Double? = 10000.0
+    var onlyFree : Boolean? = false
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,21 +50,22 @@ class MainActivity : AppCompatActivity() {
         fournisseur = locationManager.getBestProvider(criteres, true).toString()
 
         val localisation = locationManager.getLastKnownLocation(fournisseur)
-        val latitude = localisation?.latitude
+        latitude = localisation?.latitude
         Log.d("MainActivity", "latitude=$latitude")
-        val longitude = localisation?.longitude
+        longitude = localisation?.longitude
         Log.d("MainActivity", "longitude=$longitude")
 
         //Récupération composants graphiques
         val button = findViewById<Button>(R.id.button)
-        val tv = findViewById<TextView>(R.id.tv_nbBornes)
+        val search = findViewById<ImageButton>(R.id.ib_search)
+        tv = findViewById<TextView>(R.id.tv_nbBornes)
         val lv = findViewById<ListView>(R.id.lv_bornes)
 
         //Récupération json
-        val listBornes = HttpConnectServerAsyncTask().execute(latitude, longitude, 10000).get()
+        listBornes = HttpConnectServerAsyncTask().execute(latitude, longitude, range, cityName, onlyFree).get()
 
         //Affichage nombre max de bornes
-        tv.text = listBornes.size.toString() + " borne(s) près de votre position"
+        tv?.text = listBornes?.size.toString() + " borne(s) près de votre position"
 
         //Affichage de la liste
         adapter = BornesListAdapter(listBornes)
@@ -67,5 +79,32 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(INTENT_EXTRA_RESULT_3, listBornes)
             startActivity(intent)
         })
+
+        search.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, Params::class.java)
+            intent.putExtra(INTENT_EXTRA_RESULT_4, cityName)
+            intent.putExtra(INTENT_EXTRA_RESULT_5, range)
+            intent.putExtra(INTENT_EXTRA_RESULT_6, onlyFree)
+            startActivityForResult(intent, 1000)
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1000){
+            if (data != null) {
+                cityName = data.getStringExtra(Params.INTENT_EXTRA_RESULT_1)
+                range = data.getDoubleExtra(Params.INTENT_EXTRA_RESULT_2, 10000.0)
+                onlyFree = data.getBooleanExtra(Params.INTENT_EXTRA_RESULT_3, false)
+
+                listBornes.clear()
+                listBornes.addAll(HttpConnectServerAsyncTask().execute(latitude, longitude, range, cityName, onlyFree).get())
+
+                //Affichage nombre max de bornes
+                tv?.text = listBornes.size.toString() + " borne(s) près de votre position"
+            }
+            adapter?.notifyDataSetChanged()
+        }
     }
 }

@@ -58,8 +58,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         //Configuration de la vue de la mMap
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(pos))
-        mMap.setMinZoomPreference(11.5f)
+        var posView = pos
+        if (bornes.size > 0){
+            if (bornes[0].latitude != null){
+                posView = LatLng(bornes[0].latitude.toDouble(), bornes[0].longitude.toDouble())
+            }
+        }
+        else {
+            posView = pos
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(posView))
+        mMap.setMinZoomPreference(10f)
     }
 
     override fun onBackPressed() {
