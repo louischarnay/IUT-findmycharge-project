@@ -85,17 +85,25 @@ class HttpConnectServerAsyncTask : AsyncTask<Any, Void, ArrayList<Bornes>>() {
         urlConnection.disconnect()
 
         var bornes = JSONObject(json.toString()).getJSONArray("records")
+        var tel = "Pas de téléphone"
 
         //Construction de la liste
         for (i in 0 until nbBornes){
             var borne = JSONObject(bornes[i].toString()).getJSONObject("fields")
             if (i == 0){
                 var pos = borne.getJSONArray("coordonneesxy")
-                result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), pos.getString(0), pos.getString(1), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("reg_name"), borne.getString("com_arm_name"), borne.getString("nbre_pdc"), borne.getString("telephone_operateur"), borne.getString("implantation_station")))
+
+                try {
+                    if (borne.getString("telephone_operateur") != null){
+                        tel = borne.getString("telephone_operateur")
+                    }
+                }
+                catch (e: Exception){}
+
+                result.add(Bornes(borne.getString("id_pdc_itinerance"), borne.getString("nom_station"), pos.getString(0), pos.getString(1), borne.getString("adresse_station"), borne.getString("code_insee_commune"), borne.getString("reg_name"), borne.getString("com_arm_name"), borne.getString("nbre_pdc"), tel, borne.getString("implantation_station")))
             }
             else if (borne.getString("nom_station") != result[result.size - 1].name){
                 var pos = borne.getJSONArray("coordonneesxy")
-                var tel = "Pas de téléphone"
 
                 try {
                     if (borne.getString("telephone_operateur") != null){
